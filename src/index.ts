@@ -10,7 +10,7 @@ console.debug = () => {
 };
 const products: Product[] = [];
 
-const query = "air fryer"
+const query = "refrigerator"
 const price_range = {
     lower: 10000,
     upper: 1500000

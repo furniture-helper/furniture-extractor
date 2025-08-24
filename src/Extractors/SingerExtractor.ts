@@ -1,56 +1,39 @@
 import {Extractor} from "./Extractor.js";
 import {Product} from "../Product.js";
 import {BrowserManager} from "../BrowserManager.js";
-import {save_html} from "../utils/file-utils.js";
 
 class SingerExtractor extends Extractor {
     
     constructor(url: string) {
-        super(url);
+        super(url, "Singer");
     }
     
-    async extract(retries = 2): Promise<Product> {
+    async doExtract(): Promise<Product> {
         const browser = await BrowserManager.getBrowser("singer")
         const page = await browser.newPage();
-        try {
-            await page.goto(this.url, {timeout: 60000, waitUntil: "load"});
-            const title = await page.textContent('.single-page-product-title', {timeout: 60000});
-            if (!title) {
-                throw new Error("Unable to extract title");
-            }
-            
-            const priceSelector = await page.$('.productprice') ? '.productprice' : '.sing-pro-price';
-            const priceString = await page.textContent(priceSelector, {timeout: 60000})
-            if (!priceString) {
-                throw new Error("Unable to extract price");
-            }
-            
-            await page.close()
-            
-            let price: number;
-            try {
-                price = parseFloat(priceString?.replace("Rs.", "").replace(/,/g, "").trim() || "");
-            } catch (e) {
-                throw new Error("Unable to parse price");
-            }
-            
-            console.debug(`Extracted product: ${title} - ${price}`);
-            return new Product(title, price, this.url, "Singer");
-            
-        } catch (error) {
-            console.warn(`Error extracting product for ${this.url}:`, error);
-            save_html(await page.content(), `${this.url.split("/").pop()}.html`);
-            await page.close();
-            if (retries > 0) {
-                console.warn(`Retrying ${this.url} (${retries} attempts left)`);
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                return this.extract(retries - 1);
-            }
-            throw new Error(`Failed to load page ${this.url}: ${error}`);
-        } finally {
-            await page.close();
+        await page.goto(this.url, {timeout: 60000, waitUntil: "load"});
+        const title = await page.textContent('.single-page-product-title', {timeout: 60000});
+        if (!title) {
+            throw new Error("Unable to extract title");
         }
         
+        const priceSelector = await page.$('.productprice') ? '.productprice' : '.sing-pro-price';
+        const priceString = await page.textContent(priceSelector, {timeout: 60000})
+        if (!priceString) {
+            throw new Error("Unable to extract price");
+        }
+        
+        await page.close()
+        
+        let price: number;
+        try {
+            price = parseFloat(priceString?.replace("Rs.", "").replace(/,/g, "").trim() || "");
+        } catch (e) {
+            throw new Error("Unable to parse price");
+        }
+        
+        await page.close()
+        return this.createProduct(title, price)
     }
 }
 

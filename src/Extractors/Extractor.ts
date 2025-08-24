@@ -1,13 +1,36 @@
 import {Product} from "../Product.js";
 
 abstract class Extractor {
-    protected url: string;
+    protected readonly url: string;
+    private readonly vendor: string;
     
-    protected constructor(url: string) {
+    protected constructor(url: string, vendor: string) {
         this.url = url;
+        this.vendor = vendor;
     }
     
-    abstract extract(): Promise<Product>;
+    abstract doExtract(): Promise<Product>
+    
+    extract(): Promise<Product> {
+        console.debug(`Extracting product data from ${this.url}...`);
+        
+        let retries = 3
+        while (retries > 0) {
+            try {
+                const product = this.doExtract();
+                console.debug(`Extracted product: ${product}`);
+                return product
+            } catch (error) {
+                retries -= 1;
+                console.warn(`Error extracting product for ${this.url}:`, error);
+            }
+        }
+        throw new Error(`Failed to extract product data from ${this.url} after ${retries} attempts`);
+    };
+    
+    protected createProduct(title: string, price: number): Product {
+        return new Product(title, price, this.url, this.vendor)
+    }
 }
 
 export {Extractor};
