@@ -1,0 +1,28 @@
+const BRANDS = [
+    "LG",
+    "Whirlpool",
+    "Samsung",
+    "Singer",
+    "Hitachi",
+    "Abans",
+    "Candy",
+    "Haier",
+    "Sisil",
+    "Panasonic",
+    "Beko",
+    "Hisense",
+    "Damro",
+    "Elba",
+    "Ferre",
+    "Midea",
+    "Morphy Richards",
+    "Innovex",
+    "SGL",
+    "Jasper",
+    "Bree",
+    "JVC",
+    "Toshiba",
+    "Russell Hobbs"
+];
+
+export {BRANDS};
