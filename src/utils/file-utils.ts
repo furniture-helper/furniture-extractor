@@ -19,13 +19,15 @@ function recordsToCsv(data: Record<string, any>[], filename: string): void {
     
     const csvContent = csvRows.join('\n');
     
-    fs.writeFileSync(filename, csvContent);
-    console.log(`Data written to ${filename}`);
+    fs.mkdirSync("output", {recursive: true});
+    fs.writeFileSync(`output/${filename}`, csvContent);
+    console.log(`Data written to output/${filename}`);
 }
 
 function save_html(content: string, filename: string): void {
-    fs.writeFileSync(filename, content);
-    console.log(`HTML content saved to ${filename}`);
+    fs.mkdirSync("debug", {recursive: true});
+    fs.writeFileSync(`debug/${filename}`, content);
+    console.log(`HTML content saved to debug/${filename}`);
 }
 
 export {recordsToCsv, save_html};

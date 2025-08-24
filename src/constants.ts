@@ -22,7 +22,12 @@ const BRANDS = [
     "Bree",
     "JVC",
     "Toshiba",
-    "Russell Hobbs"
+    "Russell Hobbs",
+    "Bosch",
+    "Kenwood",
+    "Hafele",
+    "BLACK+DECKER",
+    "Swan"
 ];
 
 export {BRANDS};

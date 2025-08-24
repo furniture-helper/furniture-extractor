@@ -19,7 +19,8 @@ class SingerExtractor extends Extractor {
                 throw new Error("Unable to extract title");
             }
             
-            const priceString = await page.textContent('.sing-pro-price', {timeout: 60000});
+            const priceSelector = await page.$('.productprice') ? '.productprice' : '.sing-pro-price';
+            const priceString = await page.textContent(priceSelector, {timeout: 60000})
             if (!priceString) {
                 throw new Error("Unable to extract price");
             }
@@ -33,11 +34,8 @@ class SingerExtractor extends Extractor {
                 throw new Error("Unable to parse price");
             }
             
-            const listingUrl = this.url;
-            const vendor = "Abans";
-            
             console.debug(`Extracted product: ${title} - ${price}`);
-            return new Product(title, price, listingUrl, vendor);
+            return new Product(title, price, this.url, "Singer");
             
         } catch (error) {
             console.warn(`Error extracting product for ${this.url}:`, error);
