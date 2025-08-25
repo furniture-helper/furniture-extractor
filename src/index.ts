@@ -1,19 +1,9 @@
-import {Product} from "./Product.js";
-import {Searcher} from "./Searchers/Searcher.js";
-import {BrowserManager} from "./BrowserManager.js";
-import {recordsToCsv} from "./utils/file-utils.js";
-import {SinghagiriSearcher} from "./Searchers/SinghagiriSearcher.js";
-import {ProcessQueue} from "./ProcessQueue.js";
 import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
-import {DamroSearcher} from "./Searchers/DamroSearcher.js";
-import {AbansSearcher} from "./Searchers/AbansSearcher.js";
-import {SingerSearcher} from "./Searchers/SingerSearcher.js";
-import {Statistics} from "./Statistics.js";
-import minimist from 'minimist';
 
 
 // console.debug = () => {
 // };
+
 const products: Product[] = [];
 
 const args = minimist(process.argv.slice(2));

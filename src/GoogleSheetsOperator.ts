@@ -28,6 +28,20 @@ class GoogleSheetsOperator {
         }
     }
     
+    static async getProductPrice(row: number): Promise<number | null> {
+        const res = await sheets.spreadsheets.values.get({
+            auth: await this.getClient(),
+            spreadsheetId: SPREADSHEET_ID,
+            range: `${SHEET_NAME}!E${row}`,
+        });
+        const values = res.data.values;
+        if (values && values.length > 0 && values[0].length > 0) {
+            const price = parseFloat((values[0][0]).replace(',', ''));
+            return isNaN(price) ? null : price;
+        }
+        return null;
+    }
+    
     private static async updateProduct(product: Product, category: string, row: number): Promise<void> {
         const values = [
             [
@@ -79,24 +93,14 @@ class GoogleSheetsOperator {
         console.log(`Added new product: ${product}`);
     }
     
-    private static async getProductPrice(row: number): Promise<number | null> {
-        const res = await sheets.spreadsheets.values.get({
-            auth: await this.getClient(),
-            spreadsheetId: SPREADSHEET_ID,
-            range: `${SHEET_NAME}!E${row}`,
-        });
-        const values = res.data.values;
-        if (values && values.length > 0 && values[0].length > 0) {
-            const price = parseFloat((values[0][0]).replace(',', ''));
-            return isNaN(price) ? null : price;
-        }
-        return null;
-    }
-    
     private static async getClient(): Promise<any> {
         if (!this.client) {
+            const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!);
             const auth = new google.auth.GoogleAuth({
-                keyFile: 'service-account.json',
+                credentials: {
+                    client_email: serviceAccount.client_email,
+                    private_key: serviceAccount.private_key,
+                },
                 scopes: ['https://www.googleapis.com/auth/spreadsheets'],
             });
             this.client = auth.getClient();
