@@ -17,6 +17,7 @@ jobs:
           path: |
             node_modules
             dist
+            ~/.cache/ms-playwright
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         run: npm install
@@ -42,6 +43,7 @@ jobs:
           path: |
             node_modules
             dist
+            ~/.cache/ms-playwright
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
       - name: Fetch products for ${{ matrix.query.query }}
         run: node dist/index.js --query="${{ matrix.query.query }}" --lower=${{ matrix.query.lower }} --upper=${{ matrix.query.upper }}
