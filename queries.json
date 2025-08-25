@@ -22,11 +22,26 @@
   {
     "query": "Bed",
     "lower": 20000,
-    "upper": 80000
+    "upper": 100000
   },
   {
     "query": "Mattress",
     "lower": 10000,
     "upper": 70000
+  },
+  {
+    "query": "Rug",
+    "lower": 5000,
+    "upper": 40000
+  },
+  {
+    "query": "Sofa",
+    "lower": 40000,
+    "upper": 150000
+  },
+  {
+    "query": "Dining Table",
+    "lower": 30000,
+    "upper": 120000
   }
 ]

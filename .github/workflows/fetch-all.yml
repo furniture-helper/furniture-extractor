@@ -18,7 +18,7 @@ jobs:
             node_modules
             dist
             ~/.cache/ms-playwright
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}-$GITHUB_RUN_ID
       - name: Install dependencies
         run: npm install
       - name: Install Playwright
@@ -44,7 +44,7 @@ jobs:
             node_modules
             dist
             ~/.cache/ms-playwright
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}-$GITHUB_RUN_ID
       - name: Fetch products for ${{ matrix.query.query }}
         run: node dist/index.js --query="${{ matrix.query.query }}" --lower=${{ matrix.query.lower }} --upper=${{ matrix.query.upper }}
         env:
