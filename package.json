@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "run": "node dist/index.js",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/index.js --query=Mattress --lower=30000 --upper=70000"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
