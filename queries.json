@@ -1,5 +1,15 @@
 [
   {
+    "query": "Refrigerator",
+    "lower": 80000,
+    "upper": 200000
+  },
+  {
+    "query": "Air Fryer",
+    "lower": 10000,
+    "upper": 50000
+  },
+  {
     "query": "Mattress",
     "lower": 10000,
     "upper": 70000
