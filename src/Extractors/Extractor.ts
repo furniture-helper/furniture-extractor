@@ -11,13 +11,13 @@ abstract class Extractor {
     
     abstract doExtract(): Promise<Product>
     
-    extract(): Promise<Product> {
+    async extract(): Promise<Product> {
         console.debug(`Extracting product data from ${this.url}...`);
         
         let retries = 3
         while (retries > 0) {
             try {
-                const product = this.doExtract();
+                const product = await this.doExtract();
                 console.debug(`Extracted product: ${product}`);
                 return product
             } catch (error) {
