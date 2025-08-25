@@ -10,6 +10,21 @@
     "upper": 50000
   },
   {
+    "query": "Hob",
+    "lower": 30000,
+    "upper": 100000
+  },
+  {
+    "query": "Microwave",
+    "lower": 25000,
+    "upper": 70000
+  },
+  {
+    "query": "Bed",
+    "lower": 20000,
+    "upper": 80000
+  },
+  {
     "query": "Mattress",
     "lower": 10000,
     "upper": 70000
