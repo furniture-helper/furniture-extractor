@@ -47,6 +47,8 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
       - name: Fetch products for ${{ matrix.query.query }}
         run: node dist/index.js --query="${{ matrix.query.query }}" --lower=${{ matrix.query.lower }} --upper=${{ matrix.query.upper }}
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
       - name: Upload debug and output artifacts
         uses: actions/upload-artifact@v4
         with:
