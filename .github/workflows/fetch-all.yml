@@ -1,0 +1,52 @@
+name: Fetch All Products
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      queries: ${{ steps.set-queries.outputs.queries }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            dist
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Read queries.json
+        id: set-queries
+        run: echo "queries=$(jq -c . queries.json)" >> $GITHUB_OUTPUT
+
+  fetch-all:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        query: ${{ fromJson(needs.setup.outputs.queries) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            dist
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Fetch products for ${{ matrix.query.query }}
+        run: node dist/index.js --query="${{ matrix.query.query }}" --lower="${{ matrix.query.lower }}" --upper="${{ matrix.query.upper }}"
+      - name: Upload debug and output artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            debug
+            output

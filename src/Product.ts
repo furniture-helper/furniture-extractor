@@ -21,11 +21,27 @@ class Product {
         this.price = price;
         this.listingUrl = listingUrl;
         this.vendor = vendor;
-        this.brand = this.getBrand();
+        this.brand = this.determineBrand();
     }
     
     getPrice(): number {
         return this.price;
+    }
+    
+    getTitle(): string {
+        return this.title;
+    }
+    
+    getListingUrl(): string {
+        return this.listingUrl;
+    }
+    
+    getVendor(): string {
+        return this.vendor;
+    }
+    
+    getBrand(): string {
+        return this.brand;
     }
     
     toString(): string {
@@ -42,8 +58,8 @@ class Product {
         };
     }
     
-    private getBrand(): string {
-        return BRANDS.find(brand => this.title.toLowerCase().includes(brand.toLowerCase())) || "";
+    private determineBrand(): string {
+        return BRANDS.find(brand => this.title.toLowerCase().includes(brand.toLowerCase())) || this.vendor;
     }
     
     

@@ -22,6 +22,7 @@ abstract class Extractor {
                 return product
             } catch (error) {
                 retries -= 1;
+                await new Promise(res => setTimeout(res, 5000));
                 console.warn(`Error extracting product for ${this.url}:`, error);
             }
         }

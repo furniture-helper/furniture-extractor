@@ -16,8 +16,8 @@ class AbansSearcher extends Searcher {
         
         const browser = await BrowserManager.getBrowser("abans")
         const page = await browser.newPage();
-        await page.goto(searchUrl);
-        await page.waitForLoadState("networkidle", {timeout: 60000});
+        await page.goto(searchUrl, {timeout: 60000});
+        // await page.waitForLoadState("networkidle", {timeout: 60000});
         
         let productUrls = new Set<string>();
         while (true) {

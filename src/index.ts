@@ -3,19 +3,24 @@ import {Searcher} from "./Searchers/Searcher.js";
 import {BrowserManager} from "./BrowserManager.js";
 import {recordsToCsv} from "./utils/file-utils.js";
 import {SinghagiriSearcher} from "./Searchers/SinghagiriSearcher.js";
-import {SingerSearcher} from "./Searchers/SingerSearcher.js";
-import {AbansSearcher} from "./Searchers/AbansSearcher.js";
-import {DamroSearcher} from "./Searchers/DamroSearcher.js";
 import {ProcessQueue} from "./ProcessQueue.js";
+import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
+import {DamroSearcher} from "./Searchers/DamroSearcher.js";
+import {AbansSearcher} from "./Searchers/AbansSearcher.js";
+import {SingerSearcher} from "./Searchers/SingerSearcher.js";
+import {Statistics} from "./Statistics.js";
+import minimist from 'minimist';
 
-console.debug = () => {
-};
+
+// console.debug = () => {
+// };
 const products: Product[] = [];
 
-const query = "air fryer"
+const args = minimist(process.argv.slice(2));
+const query = args['query']
 const price_range = {
-    lower: 10000,
-    upper: 1500000
+    lower: args['lower'] || 0,
+    upper: args['upper'] || 1000000
 }
 
 const searchers: Searcher[] = [
@@ -36,6 +41,7 @@ productsRecords.sort((a, b) => a.price - b.price)
 recordsToCsv(productsRecords, `${query.replace(" ", "-").toLowerCase()}.csv`)
 
 await BrowserManager.closeAllBrowsers()
+Statistics.printStatistics()
 process.exit(0)
 
 
@@ -45,15 +51,20 @@ async function searchAndExtract(searcher: Searcher, products: Product[], price_r
 }) {
     const productUrls = await searcher.search()
     
-    const processQueue = new ProcessQueue(3)
+    const processQueue = new ProcessQueue(1)
     for (const url of productUrls) {
         processQueue.addTask(async () => {
             const extractor = searcher.getExtractor(url)
             const product = await extractor.extract()
             if (product.getPrice() >= price_range.lower && product.getPrice() <= price_range.upper) {
                 products.push(product)
+                await GoogleSheetsOperator.addOrUpdateProduct(product, query)
+                
+                Statistics.recordProductAdded()
                 console.log(`Added product: ${product}`);
             }
+            Statistics.recordProductProcessed()
+            Statistics.printProgress()
         });
     }
     await processQueue.run()

@@ -28,7 +28,9 @@ const BRANDS = [
     "Hafele",
     "BLACK+DECKER",
     "Swan",
-    "Geepas"
+    "Geepas",
+    "Indesit",
+    "Ignis"
 ];
 
 export {BRANDS};
