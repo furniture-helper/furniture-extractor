@@ -27,7 +27,8 @@ const BRANDS = [
     "Kenwood",
     "Hafele",
     "BLACK+DECKER",
-    "Swan"
+    "Swan",
+    "Geepas"
 ];
 
 export {BRANDS};
