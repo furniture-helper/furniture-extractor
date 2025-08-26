@@ -19,6 +19,6 @@ for (const query of queries) {
         console.error(`Error processing query "${query['query']}":`, error);
         exit_code = 1;
     }
-    
-    process.exit(exit_code);
 }
+
+process.exit(exit_code);
