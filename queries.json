@@ -40,8 +40,28 @@
     "upper": 150000
   },
   {
-    "query": "Dining Table",
-    "lower": 30000,
+    "query": "Dining Table Set",
+    "lower": 100000,
+    "upper": 200000
+  },
+  {
+    "query": "Office Desk",
+    "lower": 50000,
     "upper": 120000
+  },
+  {
+    "query": "Office Chair",
+    "lower": 40000,
+    "upper": 120000
+  },
+  {
+    "query": "Television",
+    "lower": 100000,
+    "upper": 250000
+  },
+  {
+    "query": "Cleaning Robot",
+    "lower": 20000,
+    "upper": 100000
   }
 ]
