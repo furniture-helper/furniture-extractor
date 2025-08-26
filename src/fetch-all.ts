@@ -1,6 +1,9 @@
 import * as fs from 'fs';
 import {fetchProducts} from './fetch.js';
 
+console.debug = () => {
+};
+
 const data = fs.readFileSync('./queries.json', 'utf-8');
 const queries = JSON.parse(data);
 

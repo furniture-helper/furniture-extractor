@@ -90,7 +90,7 @@ class GoogleSheetsOperator {
             },
         });
         Statistics.recordNewProductAddedToSheet()
-        console.log(`Added new product: ${product}`);
+        console.debug(`Added new product: ${product}`);
     }
     
     private static async getClient(): Promise<any> {
