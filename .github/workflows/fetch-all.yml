@@ -5,54 +5,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
+  fetch-all:
     runs-on: ubuntu-latest
-    outputs:
-      queries: ${{ steps.set-queries.outputs.queries }}
     steps:
       - uses: actions/checkout@v4
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            dist
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}-$GITHUB_RUN_ID
       - name: Install dependencies
         run: npm install
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Build project
         run: npm run build
-      - name: Read queries.json
-        id: set-queries
-        run: echo "queries=$(jq -c . queries.json)" >> $GITHUB_OUTPUT
-
-  fetch-products:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        query: ${{ fromJson(needs.setup.outputs.queries) }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            dist
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}-$GITHUB_RUN_ID
-      - name: Fetch products for ${{ matrix.query.query }}
-        run: node dist/index.js --query="${{ matrix.query.query }}" --lower=${{ matrix.query.lower }} --upper=${{ matrix.query.upper }}
-        env:
-          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-      - name: Upload debug and output artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            debug
-            output
+      - name: Fetch all products
+        run: node dist/fetch-all.js

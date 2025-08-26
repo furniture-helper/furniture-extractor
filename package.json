@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "run": "node dist/index.js",
-    "start": "npm run build && node dist/index.js --query=\"Air Fryer\" --lower=50000 --upper=70000"
+    "start": "npm run build && node dist/index.js --query=\"Air Fryer\" --lower=50000 --upper=70000",
+    "fetch-all": "npm run build && node dist/fetch-all.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
