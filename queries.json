@@ -1,66 +1,129 @@
 [
   {
-    "query": "Air Fryer",
+    "category": "Blender",
+    "queries": [
+      "Blender"
+    ],
     "lower": 10000,
     "upper": 50000
   },
   {
-    "query": "Hob",
+    "category": "Air Fryer",
+    "queries": [
+      "Air Fryer"
+    ],
+    "lower": 10000,
+    "upper": 50000
+  },
+  {
+    "category": "Cooking Hob",
+    "queries": [
+      "Hob",
+      "Cooking Hob"
+    ],
     "lower": 30000,
     "upper": 100000
   },
   {
-    "query": "Microwave",
+    "category": "Microwave",
+    "queries": [
+      "Microwave"
+    ],
     "lower": 25000,
     "upper": 70000
   },
   {
-    "query": "Bed",
+    "category": "Bed",
+    "queries": [
+      "Bed"
+    ],
     "lower": 20000,
     "upper": 100000
   },
   {
-    "query": "Mattress",
+    "category": "Mattress",
+    "queries": [
+      "Mattress"
+    ],
     "lower": 10000,
     "upper": 70000
   },
   {
-    "query": "Rug",
+    "category": "Rug",
+    "queries": [
+      "Rug"
+    ],
     "lower": 5000,
     "upper": 40000
   },
   {
-    "query": "Sofa",
+    "category": "Sofa",
+    "queries": [
+      "Sofa"
+    ],
     "lower": 40000,
     "upper": 150000
   },
   {
-    "query": "Dining Table Set",
+    "category": "Dining Table Set",
+    "queries": [
+      "Dining Table Set"
+    ],
     "lower": 100000,
     "upper": 200000
   },
   {
-    "query": "Office Desk",
+    "category": "Office Desk",
+    "queries": [
+      "Office Desk",
+      "Office Table",
+      "Study Table",
+      "Work Desk",
+      "Computer Desk"
+    ],
     "lower": 50000,
     "upper": 120000
   },
   {
-    "query": "Office Chair",
+    "category": "Office Chair",
+    "queries": [
+      "Office Chair",
+      "Work Chair",
+      "Study Chair",
+      "Computer Chair",
+      "Gaming Chair",
+      "Ergonomic Chair"
+    ],
     "lower": 40000,
     "upper": 120000
   },
   {
-    "query": "Television",
+    "category": "Television",
+    "queries": [
+      "Television",
+      "TV"
+    ],
     "lower": 100000,
     "upper": 250000
   },
   {
-    "query": "Cleaning Robot",
+    "category": "Cleaning Robot",
+    "queries": [
+      "Cleaning Robot",
+      "Robot Vacuum",
+      "Roomba",
+      "Robot Vacuum Cleaner",
+      "Robot Cleaner",
+      "Robotic Cleaner"
+    ],
     "lower": 20000,
     "upper": 100000
   },
   {
-    "query": "Refrigerator",
+    "category": "Refrigerator",
+    "queries": [
+      "Refrigerator"
+    ],
     "lower": 80000,
     "upper": 200000
   }

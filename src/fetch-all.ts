@@ -10,6 +10,8 @@ const queries = JSON.parse(data);
 let exit_code = 0;
 
 for (const query of queries) {
+    console.log(query);
+    
     try {
         await fetchProducts(query['category'], query['queries'], {
             lower: query['lower'] || 0,
