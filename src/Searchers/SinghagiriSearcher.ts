@@ -5,14 +5,14 @@ import {Extractor} from "../Extractors/Extractor.js";
 import {SinghagiriExtractor} from "../Extractors/SinghagiriExtractor.js";
 
 class SinghagiriSearcher extends Searcher {
-    constructor(query: string) {
-        super(query, "Singhagiri");
+    constructor(queries: string[]) {
+        super(queries, "Singhagiri");
     }
     
-    async doSearch(): Promise<string[]> {
+    async doSearch(query: string): Promise<string[]> {
         const browser = await BrowserManager.getBrowser("singhagiri")
         
-        const encodedQuery = encodeURIComponent(this.query);
+        const encodedQuery = encodeURIComponent(query);
         let searchUrl = `https://singhagiri.lk/filter?search=${encodedQuery}`;
         let productUrls = new Set<string>();
         while (true) {

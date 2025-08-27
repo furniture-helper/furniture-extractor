@@ -11,7 +11,7 @@ let exit_code = 0;
 
 for (const query of queries) {
     try {
-        await fetchProducts(query['query'], {
+        await fetchProducts(query['category'], query['queries'], {
             lower: query['lower'] || 0,
             upper: query['upper'] || 1000000
         });

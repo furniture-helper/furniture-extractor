@@ -5,12 +5,13 @@ console.debug = () => {
 };
 
 const args = minimist(process.argv.slice(2));
-const query = args['query']
+const category = args['category']
+const queries = args['queries'].split(',').map((q: string) => q.trim());
 const price_range = {
     lower: args['lower'] || 0,
     upper: args['upper'] || 1000000
 }
 
 
-await fetchProducts(query, price_range);
+await fetchProducts(category, queries, price_range);
 

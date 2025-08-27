@@ -5,12 +5,12 @@ import {Extractor} from "../Extractors/Extractor.js";
 import {SingerExtractor} from "../Extractors/SingerExtractor.js";
 
 class SingerSearcher extends Searcher {
-    constructor(query: string) {
-        super(query, "Singer");
+    constructor(queries: string[]) {
+        super(queries, "Singer");
     }
     
-    async doSearch(): Promise<string[]> {
-        const encodedQuery = encodeURIComponent(this.query);
+    async doSearch(query: string): Promise<string[]> {
+        const encodedQuery = encodeURIComponent(query);
         const browser = await BrowserManager.getBrowser("singer")
         const page = await browser.newPage();
         
@@ -47,6 +47,16 @@ class SingerSearcher extends Searcher {
     
     async getListItems(page: Page): Promise<string[]> {
         await page.waitForLoadState("networkidle");
+        
+        const noResultsElement = await page.$('.no-results');
+        if (noResultsElement) {
+            const isVisible = await noResultsElement.isVisible();
+            if (isVisible) {
+                console.debug("No results found on this page.");
+                return [];
+            }
+        }
+        
         await page.waitForSelector(".productFilter", {timeout: 60000});
         const productListItems = await page.$$(".productFilter");
         

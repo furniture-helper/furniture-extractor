@@ -5,15 +5,15 @@ import {Extractor} from "../Extractors/Extractor.js";
 import {DamroExtractor} from "../Extractors/DamroExtractor.js";
 
 class DamroSearcher extends Searcher {
-    constructor(query: string) {
-        super(query, "Damro");
+    constructor(queries: string[]) {
+        super(queries, "Damro");
     }
     
-    async doSearch(): Promise<string[]> {
+    async doSearch(query: string): Promise<string[]> {
         const browser = await BrowserManager.getBrowser("damro")
         
-        const encodedQuery = encodeURIComponent(this.query);
-        let searchUrl = `https://damroonline.lk/?s=${this.query}&post_type=product`;
+        const encodedQuery = encodeURIComponent(query);
+        let searchUrl = `https://damroonline.lk/?s=${encodedQuery}&post_type=product`;
         let productUrls = new Set<string>();
         while (true) {
             const page = await browser.newPage();
@@ -51,6 +51,7 @@ class DamroSearcher extends Searcher {
     
     async getListItems(page: Page): Promise<string[]> {
         await page.waitForLoadState("networkidle");
+        
         const productWrappers = await page.$$(".product-wrapper a");
         const productUrls: string[] = [];
         for (const wrapper of productWrappers) {
