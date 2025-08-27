@@ -6,12 +6,12 @@ import {Extractor} from "../Extractors/Extractor.js";
 import {AbansExtractor} from "../Extractors/AbansExtractor.js";
 
 class AbansSearcher extends Searcher {
-    constructor(query: string) {
-        super(query, "Abans");
+    constructor(queries: string[]) {
+        super(queries, "Abans");
     }
     
-    async doSearch(): Promise<string[]> {
-        const encodedQuery = encodeURIComponent(this.query);
+    async doSearch(query: string): Promise<string[]> {
+        const encodedQuery = encodeURIComponent(query);
         const searchUrl = `https://buyabans.com/search/show?query=${encodedQuery}`;
         
         const browser = await BrowserManager.getBrowser("abans")
@@ -51,6 +51,16 @@ class AbansSearcher extends Searcher {
     
     async getListItems(page: Page): Promise<string[]> {
         await page.waitForLoadState("networkidle");
+        
+        const noResultsElement = await page.$('.empty-product-list');
+        if (noResultsElement) {
+            const isVisible = await noResultsElement.isVisible();
+            if (isVisible) {
+                console.debug("No results found on this page.");
+                return [];
+            }
+        }
+        
         await page.waitForSelector(".product-list-item", {timeout: 60000});
         const productListItems = await page.$$(".product-list-item");
         
