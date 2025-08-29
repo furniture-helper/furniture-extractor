@@ -4,16 +4,16 @@
     "queries": [
       "Blender"
     ],
-    "lower": 10000,
-    "upper": 50000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Air Fryer",
     "queries": [
       "Air Fryer"
     ],
-    "lower": 10000,
-    "upper": 50000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Cooking Hob",
@@ -21,56 +21,56 @@
       "Hob",
       "Cooking Hob"
     ],
-    "lower": 30000,
-    "upper": 100000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Microwave",
     "queries": [
       "Microwave"
     ],
-    "lower": 25000,
-    "upper": 70000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Bed",
     "queries": [
       "Bed"
     ],
-    "lower": 20000,
-    "upper": 100000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Mattress",
     "queries": [
       "Mattress"
     ],
-    "lower": 10000,
-    "upper": 70000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Rug",
     "queries": [
       "Rug"
     ],
-    "lower": 5000,
-    "upper": 40000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Sofa",
     "queries": [
       "Sofa"
     ],
-    "lower": 40000,
-    "upper": 150000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Dining Table Set",
     "queries": [
       "Dining Table Set"
     ],
-    "lower": 100000,
-    "upper": 200000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Office Desk",
@@ -81,8 +81,8 @@
       "Work Desk",
       "Computer Desk"
     ],
-    "lower": 50000,
-    "upper": 120000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Office Chair",
@@ -94,8 +94,8 @@
       "Gaming Chair",
       "Ergonomic Chair"
     ],
-    "lower": 40000,
-    "upper": 120000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Television",
@@ -103,8 +103,8 @@
       "Television",
       "TV"
     ],
-    "lower": 100000,
-    "upper": 250000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Cleaning Robot",
@@ -116,15 +116,15 @@
       "Robot Cleaner",
       "Robotic Cleaner"
     ],
-    "lower": 20000,
-    "upper": 100000
+    "lower": 0,
+    "upper": 5000000
   },
   {
     "category": "Refrigerator",
     "queries": [
       "Refrigerator"
     ],
-    "lower": 80000,
-    "upper": 200000
+    "lower": 0,
+    "upper": 5000000
   }
 ]
