@@ -23,18 +23,19 @@ class SinghagiriExtractor extends Extractor {
             if (!priceString) {
                 throw new Error("Unable to extract price");
             }
-            
-            await page.close()
-            
+			
             let price: number;
             try {
                 price = parseFloat(priceString?.replace("Rs.", "").replace(/,/g, "").trim() || "");
             } catch (e) {
                 throw new Error("Unable to parse price");
             }
+			
+			const productImageUrl = await page.getAttribute('.product-slider__main-slider__item img', 'src') || "";
+			const pageContent = await page.content();
             
             await page.close()
-            return this.createProduct(title, price)
+            return this.createProduct(title, price, productImageUrl, pageContent);
             
         } catch (error) {
             const content_html = await page.content();

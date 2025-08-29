@@ -23,19 +23,19 @@ class AbansExtractor extends Extractor {
             if (!priceString) {
                 throw new Error("Unable to extract price");
             }
-            
-            await page.close()
-            
+			
             let price: number;
             try {
                 price = parseFloat(priceString?.replace("Rs.", "").replace(/,/g, "").trim() || "");
             } catch (e) {
                 throw new Error("Unable to parse price");
             }
-            
-            
+			
+			const productImageUrl = await page.getAttribute('.exzoom_img_ul li img', 'src') || "";
+			const pageContent = await page.content();
+			
             await page.close()
-            return this.createProduct(title, price)
+            return this.createProduct(title, price, productImageUrl, pageContent);
             
         } catch (error) {
             const content_html = await page.content();

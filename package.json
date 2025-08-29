@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "run": "node dist/index.js",
-    "start": "npm run build && node dist/index.js --category=\"Cleaning Robot\" --queries=\"Cleaning Robot, Roomba, Robot Vacuum Cleaner, Robot Cleaner, Robotic Cleaner\" --lower=5000 --upper=70000",
+    "start": "npm run build && node dist/index.js --category=\"Air Fryer\" --queries=\"Air Fryer\" --lower=5000 --upper=70000",
     "fetch-all": "npm run build && node dist/fetch-all.js"
   },
   "devDependencies": {

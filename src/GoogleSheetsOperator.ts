@@ -15,14 +15,15 @@ class GoogleSheetsOperator {
     static async addOrUpdateProduct(product: Product, category: string): Promise<void> {
         const existingRow = await this.getProductRowIfExists(product.getListingUrl(), category);
         if (existingRow) {
+			
+			let updateConsideration = true
             const newPrice = product.getPrice();
             const existingPrice = await this.getProductPrice(existingRow);
             if (existingPrice !== null && newPrice >= existingPrice) {
-                console.debug(`Skipping update for product in row ${existingRow} as the new price (${newPrice}) is not lower than the existing price (${existingPrice}): ${product}`);
-                return;
+				updateConsideration = false;
             }
             
-            await this.updateProduct(product, category, existingRow)
+            await this.updateProduct(product, category, existingRow, updateConsideration)
         } else {
             await this.addProduct(product, category);
         }
@@ -42,8 +43,11 @@ class GoogleSheetsOperator {
         return null;
     }
     
-    private static async updateProduct(product: Product, category: string, row: number): Promise<void> {
-        const values = [
+    private static async updateProduct(product: Product, category: string, row: number, updateConsideration: boolean): Promise<void> {
+        let consideration = true;
+		if (!updateConsideration) consideration = await this.getCurrentConsideration(row)
+		
+		const values = [
             [
                 product.getTitle(),
                 product.getBrand(),
@@ -51,13 +55,14 @@ class GoogleSheetsOperator {
                 category,
                 product.getPrice(),
                 product.getListingUrl(),
-                true
+                consideration,
+	            product.getProductImageUrl(),
             ],
         ];
         await sheets.spreadsheets.values.update({
             auth: await this.getClient(),
             spreadsheetId: SPREADSHEET_ID,
-            range: `${SHEET_NAME}!A${row}:G${row}`,
+            range: `${SHEET_NAME}!A${row}:H${row}`,
             valueInputOption: 'RAW',
             requestBody: {
                 values: values
@@ -76,13 +81,14 @@ class GoogleSheetsOperator {
                 category,
                 product.getPrice(),
                 product.getListingUrl(),
-                true
+                true,
+	            product.getProductImageUrl()
             ],
         ];
         await sheets.spreadsheets.values.append({
             auth: await this.getClient(),
             spreadsheetId: SPREADSHEET_ID,
-            range: `${SHEET_NAME}!A:G`,
+            range: `${SHEET_NAME}!A:H`,
             valueInputOption: 'RAW',
             insertDataOption: 'INSERT_ROWS',
             requestBody: {
@@ -124,6 +130,20 @@ class GoogleSheetsOperator {
         }
         return null;
     }
+	
+	private static async getCurrentConsideration(row: number): Promise<boolean> {
+		const res = await sheets.spreadsheets.values.get({
+			auth: await this.getClient(),
+			spreadsheetId: SPREADSHEET_ID,
+			range: `${SHEET_NAME}!G${row}`,
+		});
+		const values = res.data.values;
+		if (values && values.length > 0 && values[0].length > 0) {
+			return values[0][0] === 'TRUE';
+		}
+		return false;
+		
+	}
     
 }
 

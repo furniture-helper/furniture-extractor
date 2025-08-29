@@ -29,8 +29,8 @@ abstract class Extractor {
         throw new Error(`Failed to extract product data from ${this.url} after ${retries} attempts`);
     };
     
-    protected createProduct(title: string, price: number): Product {
-        return new Product(title, price, this.url, this.vendor)
+    protected createProduct(title: string, price: number, productImageUrl: string, pageContent: string): Product {
+        return new Product(title, price, this.url, this.vendor, productImageUrl, pageContent)
     }
 }
 

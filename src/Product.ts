@@ -6,6 +6,7 @@ type ProductRecord = {
     vendor: string;
     price: number;
     listingUrl: string;
+	productImageUrl: string;
 }
 
 class Product {
@@ -15,13 +16,17 @@ class Product {
     private readonly listingUrl: string;
     private readonly vendor: string;
     private readonly brand: string;
+	private readonly productImageUrl: string;
+	private readonly pageContent: string;
     
-    constructor(title: string, price: number, listingUrl: string, vendor: string) {
+    constructor(title: string, price: number, listingUrl: string, vendor: string, productImageUrl: string, pageContent: string) {
         this.title = title;
         this.price = price;
         this.listingUrl = listingUrl;
         this.vendor = vendor;
         this.brand = this.determineBrand();
+		this.productImageUrl = productImageUrl;
+		this.pageContent = pageContent;
     }
     
     getPrice(): number {
@@ -43,7 +48,11 @@ class Product {
     getBrand(): string {
         return this.brand;
     }
-    
+	
+	getProductImageUrl(): string {
+		return this.productImageUrl;
+	}
+	
     toString(): string {
         return `Product(title=${this.title}, price=${this.price}, listingUrl=${this.listingUrl}, vendor=${this.vendor})`;
     }
@@ -54,7 +63,8 @@ class Product {
             price: this.price,
             listingUrl: this.listingUrl,
             vendor: this.vendor,
-            brand: this.brand
+            brand: this.brand,
+            productImageUrl: this.productImageUrl,
         };
     }
     
