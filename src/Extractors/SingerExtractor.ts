@@ -35,15 +35,15 @@ class SingerExtractor extends Extractor {
 			const productImageUrl = await page.getAttribute('#mainProductImage', 'src') || "";
 			const pageContent = await page.content();
             
-            await page.close()
-            return this.createProduct(title, price, productImageUrl, pageContent);
+            return await this.createProduct(title, price, productImageUrl, pageContent);
             
         } catch (error) {
             const content_html = await page.content();
-            await page.close()
             save_html(content_html, `${this.url.split("/").pop()}.html`)
             console.warn(`Error extracting data from ${this.url}, saved HTML for debugging.`);
             throw error;
+        } finally {
+	        await page.close();
         }
     }
 }

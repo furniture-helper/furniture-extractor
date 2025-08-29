@@ -57,12 +57,13 @@ class GoogleSheetsOperator {
                 product.getListingUrl(),
                 consideration,
 	            product.getProductImageUrl(),
+	            product.getPageContentUrl()
             ],
         ];
         await sheets.spreadsheets.values.update({
             auth: await this.getClient(),
             spreadsheetId: SPREADSHEET_ID,
-            range: `${SHEET_NAME}!A${row}:H${row}`,
+            range: `${SHEET_NAME}!A${row}:I${row}`,
             valueInputOption: 'RAW',
             requestBody: {
                 values: values
@@ -82,7 +83,8 @@ class GoogleSheetsOperator {
                 product.getPrice(),
                 product.getListingUrl(),
                 true,
-	            product.getProductImageUrl()
+	            product.getProductImageUrl(),
+	            product.getPageContentUrl(),
             ],
         ];
         await sheets.spreadsheets.values.append({

@@ -14,4 +14,9 @@ const price_range = {
 
 
 await fetchProducts(category, queries, price_range);
-
+//
+// import FileUploader from "./FileUploader.js";
+//
+// const text = "Hello, World!";
+// const url = await new FileUploader("test", text).uploadFile()
+// console.log(url);

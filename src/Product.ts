@@ -1,4 +1,5 @@
 import {BRANDS} from "./constants.js";
+import FileUploader from "./FileUploader.js";
 
 type ProductRecord = {
     title: string;
@@ -7,6 +8,7 @@ type ProductRecord = {
     price: number;
     listingUrl: string;
 	productImageUrl: string;
+	productContentUrl: string;
 }
 
 class Product {
@@ -17,16 +19,16 @@ class Product {
     private readonly vendor: string;
     private readonly brand: string;
 	private readonly productImageUrl: string;
-	private readonly pageContent: string;
+	private readonly pageContentUrl: string;
     
-    constructor(title: string, price: number, listingUrl: string, vendor: string, productImageUrl: string, pageContent: string) {
+    constructor(title: string, price: number, listingUrl: string, vendor: string, productImageUrl: string, pageContentUrl: string) {
         this.title = title;
         this.price = price;
         this.listingUrl = listingUrl;
         this.vendor = vendor;
         this.brand = this.determineBrand();
 		this.productImageUrl = productImageUrl;
-		this.pageContent = pageContent;
+		this.pageContentUrl = pageContentUrl;
     }
     
     getPrice(): number {
@@ -53,6 +55,10 @@ class Product {
 		return this.productImageUrl;
 	}
 	
+	getPageContentUrl(): string {
+		return this.pageContentUrl;
+	}
+	
     toString(): string {
         return `Product(title=${this.title}, price=${this.price}, listingUrl=${this.listingUrl}, vendor=${this.vendor})`;
     }
@@ -65,13 +71,13 @@ class Product {
             vendor: this.vendor,
             brand: this.brand,
             productImageUrl: this.productImageUrl,
+            productContentUrl: this.pageContentUrl
         };
     }
     
     private determineBrand(): string {
         return BRANDS.find(brand => this.title.toLowerCase().includes(brand.toLowerCase())) || this.vendor;
     }
-    
     
 }
 
