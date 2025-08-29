@@ -1,5 +1,4 @@
 import {BRANDS} from "./constants.js";
-import FileUploader from "./FileUploader.js";
 
 type ProductRecord = {
     title: string;
