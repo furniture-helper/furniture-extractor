@@ -130,7 +130,17 @@
   {
     "category": "Refrigerator",
     "queries": [
-      "Refrigerator"
+      "Refrigerator",
+      "Fridge"
+    ],
+    "lower": 0,
+    "upper": 5000000
+  },
+  {
+    "category": "Cooking Hood",
+    "queries": [
+      "Hood",
+      "Cooking Hood"
     ],
     "lower": 0,
     "upper": 5000000
