@@ -1,5 +1,13 @@
 [
   {
+    "category": "Washer Dryer",
+    "queries": [
+      "Washer Dryer"
+    ],
+    "lower": 0,
+    "upper": 5000000
+  },
+  {
     "category": "Blender",
     "queries": [
       "Blender"
