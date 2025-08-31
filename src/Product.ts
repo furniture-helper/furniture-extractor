@@ -75,7 +75,8 @@ class Product {
     }
     
     private determineBrand(): string {
-        return BRANDS.find(brand => this.title.toLowerCase().includes(brand.toLowerCase())) || this.vendor;
+        return BRANDS.find(brand => this.title.toLowerCase().startsWith(brand.toLowerCase())) || this.vendor;
+        // return BRANDS.find(brand => this.title.toLowerCase().includes(brand.toLowerCase())) || this.vendor;
     }
     
 }
