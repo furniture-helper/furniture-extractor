@@ -9,6 +9,14 @@
     "upper": 5000000
   },
   {
+    "category": "Food Processor",
+    "queries": [
+        "Food Processor"
+    ],
+    "lower": 0,
+    "upper": 5000000
+  },
+  {
     "category": "Blender",
     "queries": [
       "Blender"
