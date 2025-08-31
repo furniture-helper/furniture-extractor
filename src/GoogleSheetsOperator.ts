@@ -16,14 +16,14 @@ class GoogleSheetsOperator {
         const existingRow = await this.getProductRowIfExists(product.getListingUrl(), category);
         if (existingRow) {
 			
-			let updateConsideration = true
+			let updateConsideration = false
             const newPrice = product.getPrice();
             const existingPrice = await this.getProductPrice(existingRow);
-            if (existingPrice !== null && newPrice >= existingPrice) {
-				updateConsideration = false;
+            if (existingPrice !== null && newPrice < existingPrice && await this.getCurrentConsideration(existingRow) != "YES") {
+				updateConsideration = true;
             }
             
-            await this.updateProduct(product, category, existingRow, updateConsideration)
+            await this.updateProduct(product, category, existingRow, updateConsideration);
         } else {
             await this.addProduct(product, category);
         }
@@ -44,7 +44,7 @@ class GoogleSheetsOperator {
     }
     
     private static async updateProduct(product: Product, category: string, row: number, updateConsideration: boolean): Promise<void> {
-        let consideration = true;
+        let consideration = "";
 		if (!updateConsideration) consideration = await this.getCurrentConsideration(row)
 		
 		const values = [
@@ -82,7 +82,7 @@ class GoogleSheetsOperator {
                 category,
                 product.getPrice(),
                 product.getListingUrl(),
-                true,
+                "",
 	            product.getProductImageUrl(),
 	            product.getPageContentUrl(),
             ],
@@ -133,7 +133,7 @@ class GoogleSheetsOperator {
         return null;
     }
 	
-	private static async getCurrentConsideration(row: number): Promise<boolean> {
+	private static async getCurrentConsideration(row: number): Promise<string> {
 		const res = await sheets.spreadsheets.values.get({
 			auth: await this.getClient(),
 			spreadsheetId: SPREADSHEET_ID,
@@ -141,9 +141,9 @@ class GoogleSheetsOperator {
 		});
 		const values = res.data.values;
 		if (values && values.length > 0 && values[0].length > 0) {
-			return values[0][0] === 'TRUE';
+			return values[0][0];
 		}
-		return false;
+		return "";
 		
 	}
     
