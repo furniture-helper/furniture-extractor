@@ -2,7 +2,8 @@
   {
     "category": "Washer Dryer",
     "queries": [
-      "Washer Dryer"
+      "Washer Dryer",
+      "Wash and Dry"
     ],
     "lower": 0,
     "upper": 5000000
