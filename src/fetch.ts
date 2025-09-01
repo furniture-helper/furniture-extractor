@@ -7,8 +7,9 @@ import {ProcessQueue} from "./ProcessQueue.js";
 import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
 import {SingerSearcher} from "./Searchers/SingerSearcher.js";
 import {AbansSearcher} from "./Searchers/AbansSearcher.js";
-import {DamroSearcher} from "./Searchers/DamroSearcher.js";
+import {DamroOnlineSearcher} from "./Searchers/DamroOnlineSearcher.js";
 import {SinghagiriSearcher} from "./Searchers/SinghagiriSearcher.js";
+import {DamroLKSearcher} from "./Searchers/DamroLKSearcher.js";
 
 async function fetchProducts(category: string, queries: string[], price_range: {
     lower: number,
@@ -18,7 +19,8 @@ async function fetchProducts(category: string, queries: string[], price_range: {
     const searchers: Searcher[] = [
         new SingerSearcher(queries),
         new AbansSearcher(queries),
-        new DamroSearcher(queries),
+        new DamroOnlineSearcher(queries),
+	    new DamroLKSearcher(queries),
         new SinghagiriSearcher(queries),
     ]
     
@@ -41,7 +43,8 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
     upper: number
 }) {
     const productUrls = await searcher.search()
-    
+    console.log(productUrls)
+	
     const processQueue = new ProcessQueue(1)
     for (const url of productUrls) {
         processQueue.addTask(async () => {

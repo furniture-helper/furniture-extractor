@@ -4,7 +4,7 @@ import {BrowserManager} from "../BrowserManager.js";
 import {Extractor} from "../Extractors/Extractor.js";
 import {DamroExtractor} from "../Extractors/DamroExtractor.js";
 
-class DamroSearcher extends Searcher {
+class DamroOnlineSearcher extends Searcher {
     constructor(queries: string[]) {
         super(queries, "Damro");
     }
@@ -78,4 +78,4 @@ class DamroSearcher extends Searcher {
     }
 }
 
-export {DamroSearcher};
+export {DamroOnlineSearcher};
