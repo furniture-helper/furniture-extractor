@@ -61,7 +61,7 @@ abstract class Searcher {
 			
 			try {
 				await page.waitForLoadState("load", {timeout: 60000});
-				await page.waitForLoadState("networkidle", {timeout: 60000});
+				if (this.waitForNetworkIdle()) await page.waitForLoadState("networkidle", {timeout: 60000});
 				
 				const noResultsElement = await page.$(this.noResultsIndicator);
 				if (noResultsElement) {
@@ -128,6 +128,10 @@ abstract class Searcher {
 		
 		return nextPageButtons[nextPageButtons.length -1]
 	}
+
+    protected waitForNetworkIdle(): boolean {
+        return true;
+    }
 }
 
 export {Searcher};
