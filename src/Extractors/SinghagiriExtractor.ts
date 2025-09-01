@@ -10,7 +10,7 @@ class SinghagiriExtractor extends Extractor {
     }
     
     async doExtract(): Promise<Product> {
-        const browser = await BrowserManager.getBrowser("singer")
+        const browser = await BrowserManager.getBrowser("Singhagiri")
         const page = await browser.newPage();
         try {
             await page.goto(this.url, {timeout: 60000, waitUntil: "load"});

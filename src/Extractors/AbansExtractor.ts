@@ -10,7 +10,7 @@ class AbansExtractor extends Extractor {
     }
     
     async doExtract(): Promise<Product> {
-        const browser = await BrowserManager.getBrowser("abans")
+        const browser = await BrowserManager.getBrowser("Abans")
         const page = await browser.newPage();
         try {
             await page.goto(this.url, {timeout: 60000, waitUntil: "load"});

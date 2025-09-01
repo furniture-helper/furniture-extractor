@@ -102,7 +102,6 @@ abstract class Searcher {
 		}
 		
 		await page.close();
-		await browser.close();
 		return [...new Set(productUrls)];
 	}
 	
