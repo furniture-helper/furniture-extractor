@@ -1,9 +1,5 @@
 import {Searcher} from "./Searcher.js";
-import {Page} from "@playwright/test";
-import {BrowserManager} from "../BrowserManager.js";
-import {ElementHandle} from "playwright-core";
 import {Extractor} from "../Extractors/Extractor.js";
-import {AbansExtractor} from "../Extractors/AbansExtractor.js";
 import {DamroOnlineExtractor} from "../Extractors/DamroOnlineExtractor.js";
 
 export class DamroOnlineSearcher extends Searcher {
