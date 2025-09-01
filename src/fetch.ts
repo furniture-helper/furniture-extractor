@@ -5,11 +5,8 @@ import {Searcher} from "./Searchers/Searcher.js";
 import {Product} from "./Product.js";
 import {ProcessQueue} from "./ProcessQueue.js";
 import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
-import {SingerSearcher} from "./Searchers/SingerSearcher.js";
 import {AbansSearcher} from "./Searchers/AbansSearcher.js";
 import {DamroOnlineSearcher} from "./Searchers/DamroOnlineSearcher.js";
-import {SinghagiriSearcher} from "./Searchers/SinghagiriSearcher.js";
-import {DamroLKSearcher} from "./Searchers/DamroLKSearcher.js";
 
 async function fetchProducts(category: string, queries: string[], price_range: {
     lower: number,
@@ -17,11 +14,11 @@ async function fetchProducts(category: string, queries: string[], price_range: {
 }): Promise<void> {
     const products: Product[] = [];
     const searchers: Searcher[] = [
-        new SingerSearcher(queries),
+        // new SingerSearcher(queries),
         new AbansSearcher(queries),
         new DamroOnlineSearcher(queries),
-	    new DamroLKSearcher(queries),
-        new SinghagiriSearcher(queries),
+	    // new DamroLKSearcher(queries),
+        // new SinghagiriSearcher(queries),
     ]
     
     const promises: Promise<void>[] = [];
@@ -43,7 +40,6 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
     upper: number
 }) {
     const productUrls = await searcher.search()
-    console.log(productUrls)
 	
     const processQueue = new ProcessQueue(1)
     for (const url of productUrls) {

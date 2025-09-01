@@ -1,81 +1,46 @@
 import {Searcher} from "./Searcher.js";
 import {Page} from "@playwright/test";
 import {BrowserManager} from "../BrowserManager.js";
+import {ElementHandle} from "playwright-core";
 import {Extractor} from "../Extractors/Extractor.js";
-import {DamroExtractor} from "../Extractors/DamroExtractor.js";
+import {AbansExtractor} from "../Extractors/AbansExtractor.js";
+import {DamroOnlineExtractor} from "../Extractors/DamroOnlineExtractor.js";
 
-class DamroOnlineSearcher extends Searcher {
-    constructor(queries: string[]) {
-        super(queries, "Damro");
+export class DamroOnlineSearcher extends Searcher {
+	
+    get vendor(): string {
+        return "Damro";
     }
-    
-    async doSearch(query: string): Promise<string[]> {
-        const browser = await BrowserManager.getBrowser("damro")
-        
-        const encodedQuery = encodeURIComponent(query);
-        let searchUrl = `https://damroonline.lk/?s=${encodedQuery}&post_type=product`;
-        let productUrls = new Set<string>();
-        while (true) {
-            const page = await browser.newPage();
-            await page.goto(searchUrl);
-            await page.waitForLoadState("networkidle", {timeout: 60000});
-            
-            
-            console.debug(`Navigating to next page: ${searchUrl}`);
-            const initialSize = productUrls.size;
-            
-            const newUrls = await this.getListItems(page);
-            console.debug(`Found ${newUrls.length} products`);
-            for (const url of newUrls) {
-                productUrls.add(url);
-            }
-            
-            if (productUrls.size === initialSize) {
-                console.debug("No new items were found, stopping pagination.");
-                await page.close();
-                break;
-            }
-            
-            const nextPageUrl = await this.getNextPageUrl(page);
-            await page.close();
-            
-            if (nextPageUrl) {
-                searchUrl = nextPageUrl;
-            } else {
-                break
-            }
-        }
-        
-        return [...new Set(productUrls)];
+	
+    get searchUrlPrefix(): string {
+        return "https://damroonline.lk/?s="
     }
-    
-    async getListItems(page: Page): Promise<string[]> {
-        await page.waitForLoadState("networkidle");
-        
-        const productWrappers = await page.$$(".product-wrapper a");
-        const productUrls: string[] = [];
-        for (const wrapper of productWrappers) {
-            const url = await wrapper.getAttribute("href");
-            if (url && url.startsWith("https://damroonline.lk/product/")) {
-                productUrls.push(url);
-            }
-        }
-        
-        return productUrls;
+	
+    get searchUrlSuffix(): string {
+        return "&post_type=product"
     }
-    
-    async getNextPageUrl(page: Page): Promise<null | string> {
-        const nextPageButton = await page.$("a.next.page-numbers");
-        const url = await nextPageButton?.getAttribute("href");
-        if (url) {
-            return url
-        }
-        return null
+	
+	get noResultsIndicator(): string {
+		return "#main-content #primary .woocommerce-info"
+	}
+	
+	get searchResultsContainerIndicator(): string {
+		return ".product-wrapper"
+	}
+	
+    get productLinkIndicator(): string {
+        return ".product-name a"
     }
-    
+	
+    get productUrlPrefix(): string {
+        return "https://damroonline.lk/product/"
+    }
+	
+    get nextPageIndicator(): string {
+        return(".next.page-numbers");
+    }
+	
     getExtractor(url: string): Extractor {
-        return new DamroExtractor(url);
+        return new DamroOnlineExtractor(url);
     }
 }
-
-export {DamroOnlineSearcher};
