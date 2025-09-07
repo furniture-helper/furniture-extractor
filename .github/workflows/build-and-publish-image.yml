@@ -1,4 +1,4 @@
-name: build-and-publish-image.yml
+name: Build and Publish Docker Image to ECR
 on:
   push:
     branches:
@@ -6,11 +6,10 @@ on:
     workflow_dispatch:
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
-  build-and-push-toecr:
+  build-and-push-to-ecr:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
 
@@ -36,7 +35,6 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         uses: docker/build-push-action@v5
         with:
@@ -44,6 +42,6 @@ jobs:
           push: true
           tags: |
             ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:${{ env.IMAGE_TAG }}
-            ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor/furniture-extractor:latest
+            ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
