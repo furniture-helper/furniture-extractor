@@ -43,7 +43,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}/furniture-extractor:${{ env.IMAGE_TAG }}
-            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}/furniture-extractor:latest
+            ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:${{ env.IMAGE_TAG }}
+            ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor/furniture-extractor:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
