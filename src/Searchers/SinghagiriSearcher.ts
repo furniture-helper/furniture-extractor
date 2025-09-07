@@ -1,8 +1,8 @@
 import {Searcher} from "./Searcher.js";
 import {Extractor} from "../Extractors/Extractor.js";
-import {SinghagiriExtractor} from "../Extractors/SinghagiriExtractor.js";
+import SinghagiriExtractor from "../Extractors/SinghagiriExtractor.js";
 
-export class SinghagiriSearcher extends Searcher {
+export default class SinghagiriSearcher extends Searcher {
 
     get vendor(): string {
         return "Singhagiri";

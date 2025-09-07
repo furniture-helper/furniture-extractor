@@ -1,8 +1,8 @@
 import {Searcher} from "./Searcher.js";
 import {Extractor} from "../Extractors/Extractor.js";
-import {SingerExtractor} from "../Extractors/SingerExtractor.js";
+import SingerExtractor from "../Extractors/SingerExtractor.js";
 
-export class SingerSearcher extends Searcher {
+export default class SingerSearcher extends Searcher {
 
     get vendor(): string {
         return "Singer";

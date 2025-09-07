@@ -5,11 +5,11 @@ import {Searcher} from "./Searchers/Searcher.js";
 import {Product} from "./Product.js";
 import {ProcessQueue} from "./ProcessQueue.js";
 import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
-import {AbansSearcher} from "./Searchers/AbansSearcher.js";
-import {DamroOnlineSearcher} from "./Searchers/DamroOnlineSearcher.js";
-import {DamroLKSearcher} from "./Searchers/DamroLKSearcher.js";
-import {SingerSearcher} from "./Searchers/SingerSearcher.js";
-import {SinghagiriSearcher} from "./Searchers/SinghagiriSearcher.js";
+import AbansSearcher from "./Searchers/AbansSearcher.js";
+import SingerSearcher from "./Searchers/SingerSearcher.js";
+import DamroOnlineSearcher from "./Searchers/DamroOnlineSearcher.js";
+import DamroLKSearcher from "./Searchers/DamroLKSearcher.js";
+import SinghagiriSearcher from "./Searchers/SinghagiriSearcher.js";
 
 async function fetchProducts(category: string, queries: string[], price_range: {
     lower: number,
