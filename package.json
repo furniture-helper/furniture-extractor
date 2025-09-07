@@ -19,6 +19,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@playwright/test": "^1.55.0",
     "client-s3": "github:aws-sdk/client-s3",
     "googleapis": "^157.0.0",
     "minimist": "^1.2.8",
