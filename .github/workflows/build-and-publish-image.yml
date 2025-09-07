@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build-and-push-to-ecr:
-    name: Push Docker image to Docker Hub
+    name: Push Docker image to ECR
     runs-on: ubuntu-latest
 
     steps:
@@ -36,12 +36,10 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:${{ env.IMAGE_TAG }}
-            ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:latest
+          tags: ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
