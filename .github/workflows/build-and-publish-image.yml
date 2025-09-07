@@ -40,6 +40,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:latest
+          tags: ${{ env.ECR_REGISTRY }}/furniture-helper/furniture-extractor:sdfsdf
           cache-from: type=gha
           cache-to: type=gha,mode=max
