@@ -4,13 +4,13 @@ import {Statistics} from "./Statistics.js";
 import {Searcher} from "./Searchers/Searcher.js";
 import {Product} from "./Product.js";
 import {ProcessQueue} from "./ProcessQueue.js";
-import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
 import MySoftlogicSearcher from "./Searchers/MySoftlogicSearcher.js";
 import AbansSearcher from "./Searchers/AbansSearcher.js";
 import SingerSearcher from "./Searchers/SingerSearcher.js";
 import DamroOnlineSearcher from "./Searchers/DamroOnlineSearcher.js";
 import DamroLKSearcher from "./Searchers/DamroLKSearcher.js";
 import SinghagiriSearcher from "./Searchers/SinghagiriSearcher.js";
+import DynamoDbOperator from "./Operators/DynamoDbOperator.js";
 
 async function fetchProducts(category: string, queries: string[], price_range: {
     lower: number,
@@ -46,14 +46,14 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
 }) {
     const productUrls = await searcher.search()
 
-    const processQueue = new ProcessQueue(1)
+    const processQueue = new ProcessQueue(2)
     for (const url of productUrls) {
         processQueue.addTask(async () => {
             const extractor = searcher.getExtractor(url)
             const product = await extractor.extract()
             if (product.getPrice() >= price_range.lower && product.getPrice() <= price_range.upper) {
                 products.push(product)
-                await GoogleSheetsOperator.addOrUpdateProduct(product, category)
+                await new DynamoDbOperator().addOrUpdateProduct(product, category)
 
                 Statistics.recordProductAdded()
                 console.log(`Added product: ${product}`);

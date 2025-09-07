@@ -19,7 +19,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.883.0",
     "@playwright/test": "^1.55.0",
+    "aws-sdk": "^2.1692.0",
     "client-s3": "github:aws-sdk/client-s3",
     "googleapis": "^157.0.0",
     "minimist": "^1.2.8",
