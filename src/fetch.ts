@@ -5,6 +5,7 @@ import {Searcher} from "./Searchers/Searcher.js";
 import {Product} from "./Product.js";
 import {ProcessQueue} from "./ProcessQueue.js";
 import {GoogleSheetsOperator} from "./GoogleSheetsOperator.js";
+import MySoftlogicSearcher from "./Searchers/MySoftlogicSearcher.js";
 import AbansSearcher from "./Searchers/AbansSearcher.js";
 import SingerSearcher from "./Searchers/SingerSearcher.js";
 import DamroOnlineSearcher from "./Searchers/DamroOnlineSearcher.js";
@@ -22,6 +23,7 @@ async function fetchProducts(category: string, queries: string[], price_range: {
         new DamroOnlineSearcher(queries),
         new DamroLKSearcher(queries),
         new SinghagiriSearcher(queries),
+        new MySoftlogicSearcher(queries)
     ]
 
     const promises: Promise<void>[] = [];

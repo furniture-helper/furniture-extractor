@@ -62,8 +62,10 @@ abstract class Extractor {
             const productImageUrl = await page.getAttribute(this.imageIndicator, 'src') || "";
 
             const pageContent = await page.content();
+            const siteRoot = new URL(this.url).origin;
+            const updatedContent = pageContent.replace(/(href|src)="\/([^"]*)"/g, `$1="${siteRoot}/$2"`);
 
-            return await this.createProduct(title, price, productImageUrl, pageContent);
+            return await this.createProduct(title, price, productImageUrl, updatedContent);
         } catch (error) {
             const content_html = await page.content();
             save_html(content_html, `${this.url.split("/").pop()}.html`)
