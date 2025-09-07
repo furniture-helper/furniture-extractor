@@ -23,7 +23,7 @@ const BRANDS = [
     "JVC",
     "Toshiba",
     "Russell Hobbs",
-	"Russel Hobs",
+    "Russel Hobs",
     "Bosch",
     "Kenwood",
     "Hafele",
@@ -32,13 +32,14 @@ const BRANDS = [
     "Geepas",
     "Indesit",
     "Ignis",
-	"Miniso",
-	"Celcius",
-	"Olsenmark",
-	"Havells",
-	"Orient Electric",
-	"Jaipan",
-	"De'Longhi"
+    "Miniso",
+    "Celcius",
+    "Olsenmark",
+    "Havells",
+    "Orient Electric",
+    "Jaipan",
+    "De'Longhi",
+    "Softlogic"
 ];
 
 export {BRANDS};
