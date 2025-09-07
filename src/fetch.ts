@@ -46,7 +46,7 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
 }) {
     const productUrls = await searcher.search()
 
-    const processQueue = new ProcessQueue(2)
+    const processQueue = new ProcessQueue(5)
     for (const url of productUrls) {
         processQueue.addTask(async () => {
             const extractor = searcher.getExtractor(url)
