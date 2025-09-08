@@ -16,6 +16,8 @@ async function fetchProducts(category: string, queries: string[], price_range: {
     lower: number,
     upper: number
 }): Promise<void> {
+    await BrowserManager.initializeBrowser()
+
     const products: Product[] = [];
     const searchers: Searcher[] = [
         new SingerSearcher(queries),
@@ -46,7 +48,7 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
 }) {
     const productUrls = await searcher.search()
 
-    const processQueue = new ProcessQueue(2)
+    const processQueue = new ProcessQueue(3)
     for (const url of productUrls) {
         processQueue.addTask(async () => {
             const extractor = searcher.getExtractor(url)

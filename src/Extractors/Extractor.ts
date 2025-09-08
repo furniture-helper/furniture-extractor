@@ -40,7 +40,7 @@ abstract class Extractor {
     };
 
     protected async getPrice(page: Page): Promise<number> {
-        const pricePromises = this.priceIndicators.map((indicator) => page.textContent(indicator));
+        const pricePromises = this.priceIndicators.map((indicator) => page.textContent(indicator, {timeout: 1000}).catch(() => null));
         let priceString = await Promise.race(pricePromises);
         return this.parsePrice(priceString || "");
     }
@@ -54,7 +54,11 @@ abstract class Extractor {
             ? `${segments[0]}.${segments[1]}`
             : segments[0];
         const price = parseFloat(normalized);
-        if (!price) throw new Error(`Price not found or invalid using indicators: ${this.priceIndicators.join(", ")}`);
+        // if (!price) throw new Error(`Price not found or invalid using indicators: ${this.priceIndicators.join(", ")}`);
+        if (!price || isNaN(price) || price <= 0) {
+            console.warn(`Could not find price at ${this.url} using indicators: ${this.priceIndicators.join(", ")}. Setting to 0`);
+            return 0;
+        }
 
         return price;
     }

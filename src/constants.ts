@@ -39,7 +39,8 @@ const BRANDS = [
     "Orient Electric",
     "Jaipan",
     "De'Longhi",
-    "Softlogic"
+    "Softlogic",
+    "Nikai"
 ];
 
 export {BRANDS};
