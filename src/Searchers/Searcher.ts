@@ -50,6 +50,11 @@ abstract class Searcher {
                     console.warn(`Warning: error while searching for "${query}" at ${this.vendor}:`, error);
                 }
             }
+
+            if ((retries === 0) && (allProductUrls.length === 0)) {
+                Statistics.recordError()
+                console.error(`Error: failed to search for "${query}" at ${this.vendor} after multiple attempts.`);
+            }
         }
 
         return [...new Set(allProductUrls)];

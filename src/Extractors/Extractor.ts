@@ -2,6 +2,7 @@ import {Product} from "../Product.js";
 import FileUploader from "../FileUploader.js";
 import {BrowserManager} from "../BrowserManager.js";
 import {save_html} from "../utils/file-utils.js";
+import {Statistics} from "../Statistics.js";
 
 abstract class Extractor {
     protected readonly url: string;
@@ -33,6 +34,7 @@ abstract class Extractor {
                 console.warn(`Error extracting product for ${this.url}:`, error);
             }
         }
+        Statistics.recordError()
         throw new Error(`Failed to extract product data from ${this.url} after ${retries} attempts`);
     };
 
