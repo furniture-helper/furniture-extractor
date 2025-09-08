@@ -5,7 +5,7 @@ import {Searcher} from "./Searchers/Searcher.js";
 import {Product} from "./Product.js";
 import {ProcessQueue} from "./ProcessQueue.js";
 import AbansSearcher from "./Searchers/AbansSearcher.js";
-import SingerSearcher from "./Searchers/SingerSearcher.js";
+// import SingerSearcher from "./Searchers/SingerSearcher.js";
 import DamroOnlineSearcher from "./Searchers/DamroOnlineSearcher.js";
 import DamroLKSearcher from "./Searchers/DamroLKSearcher.js";
 import SinghagiriSearcher from "./Searchers/SinghagiriSearcher.js";
@@ -18,7 +18,7 @@ async function fetchProducts(category: string, queries: string[], price_range: {
 }): Promise<void> {
     const products: Product[] = [];
     const searchers: Searcher[] = [
-        new SingerSearcher(queries),
+        // new SingerSearcher(queries),
         new AbansSearcher(queries),
         new DamroOnlineSearcher(queries),
         new DamroLKSearcher(queries),
@@ -46,7 +46,7 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
 }) {
     const productUrls = await searcher.search()
 
-    const processQueue = new ProcessQueue(1)
+    const processQueue = new ProcessQueue(2)
     for (const url of productUrls) {
         processQueue.addTask(async () => {
             const extractor = searcher.getExtractor(url)

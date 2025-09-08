@@ -5,7 +5,7 @@ import DamroLKExtractor from "../Extractors/DamroLKExtractor.js"
 export default class DamroLKSearcher extends Searcher {
 
     get vendor(): string {
-        return "Damro";
+        return "Damro.lk";
     }
 
     get searchUrlPrefix(): string {

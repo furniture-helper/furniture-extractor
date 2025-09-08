@@ -3,7 +3,7 @@ import {Extractor} from "./Extractor.js";
 export default class DamroOnlineExtractor extends Extractor {
 
     get vendor(): string {
-        return "Damro";
+        return "Damro Online";
     }
 
     get imageIndicator(): string {

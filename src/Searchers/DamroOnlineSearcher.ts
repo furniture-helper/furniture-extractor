@@ -5,7 +5,7 @@ import DamroOnlineExtractor from "../Extractors/DamroOnlineExtractor.js";
 export default class DamroOnlineSearcher extends Searcher {
 
     get vendor(): string {
-        return "Damro";
+        return "Damro Online";
     }
 
     get searchUrlPrefix(): string {

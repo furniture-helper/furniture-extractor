@@ -31,22 +31,21 @@ abstract class Searcher {
     abstract getExtractor(url: string): Extractor
 
     public async search(): Promise<string[]> {
-        const allProductUrls: string[] = [];
+        let allProductUrls: string[] = [];
 
         for (const query of this.queries) {
-            console.log(`Searching for "${query}" at ${this.vendor}...`);
+            console.debug(`Searching for "${query}" at ${this.vendor}...`);
 
             let retries = 3
             while (retries > 0) {
                 try {
                     const productUrls = await this.doSearch(query);
-                    console.log(`Found ${productUrls.length} products for query "${query}" at ${this.vendor}`);
-                    Statistics.recordProductFetched(productUrls.length)
+                    console.debug(`Found ${productUrls.length} products for query "${query}" at ${this.vendor}`);
                     allProductUrls.push(...productUrls);
                     break
                 } catch (error) {
                     retries -= 1;
-                    await new Promise(res => setTimeout(res, 5000));
+                    await new Promise(res => setTimeout(res, 1000));
                     console.warn(`Warning: error while searching for "${query}" at ${this.vendor}:`, error);
                 }
             }
@@ -57,7 +56,11 @@ abstract class Searcher {
             }
         }
 
-        return [...new Set(allProductUrls)];
+        allProductUrls = [...new Set(allProductUrls)]
+        Statistics.recordProductFetched(allProductUrls.length)
+        console.log(`Total products found at ${this.vendor} = ${allProductUrls.length}`);
+
+        return allProductUrls
     }
 
     protected waitForNetworkIdle(): boolean {
@@ -71,7 +74,29 @@ abstract class Searcher {
         console.debug(`Navigating to search URL: ${searchUrl}`);
 
         const page = await browser.newPage();
-        await page.goto(searchUrl);
+
+        let redirectUri: string = "";
+        page.on('response', response => {
+            if (response.status() === 302) {
+                const location = response.headers()['location'];
+                if (location) {
+                    redirectUri = location;
+                }
+            }
+        });
+
+        try {
+            await page.goto(searchUrl, {timeout: 60000, waitUntil: "load"});
+            if (this.waitForNetworkIdle()) await page.waitForLoadState("networkidle", {timeout: 60000});
+
+            if (redirectUri != "" && redirectUri.startsWith(this.productUrlPrefix)) {
+                console.debug(`Detected redirect to ${redirectUri}.`);
+                return [redirectUri];
+            }
+        } catch (error) {
+            save_html(await page.content(), `search-${this.vendor}-${query.replace(/\s+/g, '_')}.html`)
+            throw error;
+        }
 
         let productUrls = new Set<string>();
         while (true) {
@@ -131,7 +156,7 @@ abstract class Searcher {
             let url = await wrapper.getAttribute("href");
             if (url && url.startsWith(this.productUrlPrefix)) {
                 if (!url.includes(this.getSiteRoot())) url = this.getSiteRoot() + url;
-                console.log(`Found ${url}`);
+                console.debug(`Found ${url}`);
                 productUrls.push(url);
             }
         }

@@ -3,6 +3,7 @@ import FileUploader from "../FileUploader.js";
 import {BrowserManager} from "../BrowserManager.js";
 import {save_html} from "../utils/file-utils.js";
 import {Statistics} from "../Statistics.js";
+import {Page} from "@playwright/test";
 
 abstract class Extractor {
     protected readonly url: string;
@@ -30,13 +31,33 @@ abstract class Extractor {
                 return product
             } catch (error) {
                 retries -= 1;
-                await new Promise(res => setTimeout(res, 5000));
+                await new Promise(res => setTimeout(res, 1000));
                 console.warn(`Error extracting product for ${this.url}:`, error);
             }
         }
         Statistics.recordError()
         throw new Error(`Failed to extract product data from ${this.url} after ${retries} attempts`);
     };
+
+    protected async getPrice(page: Page): Promise<number> {
+        const pricePromises = this.priceIndicators.map((indicator) => page.textContent(indicator));
+        let priceString = await Promise.race(pricePromises);
+        return this.parsePrice(priceString || "");
+    }
+
+    protected async parsePrice(priceString: string): Promise<number> {
+        if (priceString && priceString.includes("Rs")) priceString = priceString.split("Rs")[1]
+        const cleaned = (priceString?.replace(/[^\d.]/g, "") || "")
+            .replace(/^[.]+|[.]+$/g, "");
+        const segments = cleaned.split(".");
+        const normalized = segments.length > 1
+            ? `${segments[0]}.${segments[1]}`
+            : segments[0];
+        const price = parseFloat(normalized);
+        if (!price) throw new Error(`Price not found or invalid using indicators: ${this.priceIndicators.join(", ")}`);
+
+        return price;
+    }
 
     private async doExtract(): Promise<Product> {
         const browser = await BrowserManager.getBrowser(this.vendor)
@@ -49,17 +70,7 @@ abstract class Extractor {
             const title = await Promise.race(titlePromises);
             if (!title) throw new Error(`Title not found using indicators: ${this.titleIndicators.join(", ")}`);
 
-            const pricePromises = this.priceIndicators.map((indicator) => page.textContent(indicator));
-            let priceString = await Promise.race(pricePromises);
-            if (priceString && priceString.includes("Rs")) priceString = priceString.split("Rs")[1]
-            const cleaned = (priceString?.replace(/[^\d.]/g, "") || "")
-                .replace(/^[.]+|[.]+$/g, "");
-            const segments = cleaned.split(".");
-            const normalized = segments.length > 1
-                ? `${segments[0]}.${segments[1]}`
-                : segments[0];
-            const price = parseFloat(normalized);
-            if (!price) throw new Error(`Price not found or invalid using indicators: ${this.priceIndicators.join(", ")}`);
+            const price = await this.getPrice(page);
 
             const productImageUrl = await page.getAttribute(this.imageIndicator, 'src') || "";
 
