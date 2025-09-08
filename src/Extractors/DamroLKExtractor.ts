@@ -15,7 +15,7 @@ export default class DamroLKExtractor extends Extractor {
     }
 
     get titleIndicators(): string[] {
-        return [".product-inside-pro-name-new", ".product-inside-pro-name"];
+        return [".product-inside-pro-name-new", ".product-inside-pro-name", ".bedroom-cat-name"];
     }
 
     // protected async getPrice(page: Page): Promise<number> {
