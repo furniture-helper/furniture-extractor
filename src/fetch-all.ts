@@ -14,7 +14,8 @@ const streamToString = (stream: Readable): Promise<string> =>
     });
 
 const data = await getQueriesJsonFromS3()
-const queries = JSON.parse(data);
+let queries = JSON.parse(data);
+queries = shuffleArray(queries);
 
 let exit_code = 0;
 
@@ -54,4 +55,12 @@ async function getQueriesJsonFromS3() {
         console.error(`Error reading file from S3:`, err);
         throw err;
     }
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
