@@ -11,7 +11,7 @@ export default class DamroLKExtractor extends Extractor {
     }
 
     get priceIndicators(): string[] {
-        return [".product-inside-cash-price-new", ".product-inside-cash-price", ".product-name-colom span", "table.table.table-striped > tbody > tr > td:has-text('Rs.')"];
+        return [".product-inside-cash-price-new:has-text('Rs.')", ".product-inside-cash-price", ".product-name-colom span", "table.table.table-striped > tbody > tr > td:has-text('Rs.')"];
     }
 
     get titleIndicators(): string[] {
