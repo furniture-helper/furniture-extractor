@@ -70,6 +70,16 @@ class Statistics {
         console.log(`${this.productsProcessed}/${this.productsFetched} processed. (Errors = ${this.errors})`)
     }
 
+    public static reset() {
+        this.productsFetched = 0
+        this.productsProcessed = 0
+        this.productsAdded = 0
+        this.newProductsAddedToSheet = 0
+        this.productsUpdatedOnSheet = 0
+        this.errors = 0
+        this.dailyStatistics = []
+    }
+
     private static getDailyStatisticsRecord(vendor: string, category: string): DailyStatisticsRecord {
         const today = new Date().toISOString().split('T')[0];
         let record = this.dailyStatistics.find(r => r.date === today && r.vendor === vendor && r.category === category);

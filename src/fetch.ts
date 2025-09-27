@@ -17,6 +17,7 @@ async function fetchProducts(category: string, queries: string[], price_range: {
     upper: number
 }): Promise<void> {
     await BrowserManager.initializeBrowser()
+    Statistics.reset()
 
     const products: Product[] = [];
     const searchers: Searcher[] = [
