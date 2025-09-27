@@ -20,12 +20,12 @@ async function fetchProducts(category: string, queries: string[], price_range: {
 
     const products: Product[] = [];
     const searchers: Searcher[] = [
-        new SingerSearcher(queries),
-        new AbansSearcher(queries),
-        new DamroOnlineSearcher(queries),
-        new DamroLKSearcher(queries),
-        new SinghagiriSearcher(queries),
-        new MySoftlogicSearcher(queries)
+        new SingerSearcher(queries, category),
+        new AbansSearcher(queries, category),
+        new DamroOnlineSearcher(queries, category),
+        new DamroLKSearcher(queries, category),
+        new SinghagiriSearcher(queries, category),
+        new MySoftlogicSearcher(queries, category)
     ]
 
     const promises: Promise<void>[] = [];
@@ -39,7 +39,7 @@ async function fetchProducts(category: string, queries: string[], price_range: {
     recordsToCsv(productsRecords, `${category.replace(" ", "-").toLowerCase()}.csv`)
 
     await BrowserManager.closeAllBrowsers()
-    Statistics.printStatistics()
+    await Statistics.printStatistics()
 }
 
 async function searchAndExtract(category: string, searcher: Searcher, products: Product[], price_range: {
@@ -57,10 +57,10 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
                 products.push(product)
                 await new DynamoDbOperator().addOrUpdateProduct(product, category)
 
-                Statistics.recordProductAdded()
+                Statistics.recordProductAdded(searcher.vendor, category)
                 console.log(`Added product: ${product}`);
             }
-            Statistics.recordProductProcessed()
+            Statistics.recordProductProcessed(searcher.vendor, category)
             Statistics.printProgress()
         });
     }

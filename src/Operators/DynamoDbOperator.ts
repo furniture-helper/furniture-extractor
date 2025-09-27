@@ -35,7 +35,7 @@ export default class DynamoDbOperator extends Operator {
 
         await DynamoDbOperator.client.send(new PutItemCommand(params));
         console.debug(`Added product in DynamoDB: ${product}`);
-        Statistics.recordNewProductAddedToSheet();
+        Statistics.recordNewProductAddedToSheet(product.getVendor(), category);
     }
 
     private async updateExistingProduct(product: Product, category: string, oldPrice: number, existingConsideration: string): Promise<void> {
@@ -60,7 +60,7 @@ export default class DynamoDbOperator extends Operator {
 
         await DynamoDbOperator.client.send(new PutItemCommand(params));
         console.debug(`Updated product in DynamoDB: ${product}`);
-        Statistics.recordProductUpdatedOnSheet()
+        Statistics.recordProductUpdatedOnSheet(product.getVendor(), category)
     }
 
     private async getProductIfExists(listingUrl: string, category: string): Promise<[Product | null, string]> {

@@ -7,9 +7,11 @@ import {save_html} from "../utils/file-utils.js";
 
 abstract class Searcher {
     protected queries: string[];
+    protected category: string;
 
-    public constructor(queries: string[]) {
+    public constructor(queries: string[], category: string) {
         this.queries = queries;
+        this.category = category;
     }
 
     abstract get vendor(): string;
@@ -57,7 +59,7 @@ abstract class Searcher {
         }
 
         allProductUrls = [...new Set(allProductUrls)]
-        Statistics.recordProductFetched(allProductUrls.length)
+        Statistics.recordProductFetched(this.vendor, this.category, allProductUrls.length)
         console.log(`Total products found at ${this.vendor} = ${allProductUrls.length}`);
 
         return allProductUrls
