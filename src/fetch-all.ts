@@ -2,6 +2,8 @@ import {fetchProducts} from './fetch.js';
 import {GetObjectCommand, S3Client} from "@aws-sdk/client-s3";
 import {Readable} from "stream";
 
+const TIMEOUT_MS = 6 * 60 * 60 * 1000 // 6 hours
+
 console.debug = () => {
 };
 
@@ -13,27 +15,45 @@ const streamToString = (stream: Readable): Promise<string> =>
         stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf-8")));
     });
 
-const data = await getQueriesJsonFromS3()
-let queries = JSON.parse(data);
-queries = shuffleArray(queries);
+async function runMain(): Promise<number> {
+    const data = await getQueriesJsonFromS3()
+    let queries = JSON.parse(data);
+    queries = shuffleArray(queries);
 
-let exit_code = 0;
+    let exit_code = 0;
 
-for (const query of queries) {
-    console.log(query);
+    for (const query of queries) {
+        console.log(query);
 
-    try {
-        await fetchProducts(query['category'], query['queries'], {
-            lower: query['lower'] || 0,
-            upper: query['upper'] || 1000000
-        });
-    } catch (error) {
-        console.error(`Error processing query "${query['query']}":`, error);
-        exit_code = 1;
+        try {
+            await fetchProducts(query['category'], query['queries'], {
+                lower: query['lower'] || 0,
+                upper: query['upper'] || 1000000
+            });
+        } catch (error) {
+            console.error(`Error processing query "${query['query']}":`, error);
+            exit_code = 1;
+        }
     }
+
+    process.exit(exit_code);
 }
 
-process.exit(exit_code);
+(async () => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const timeoutPromise = new Promise<never>((_resolve, reject) => {
+        timeoutId = setTimeout(() => reject(new Error(`Script timed out after ${TIMEOUT_MS} ms`)), TIMEOUT_MS);
+    });
+
+    try {
+        const exitCode = await Promise.race([runMain(), timeoutPromise]);
+        clearTimeout(timeoutId!);
+        process.exit(typeof exitCode === "number" ? exitCode : 0);
+    } catch (err) {
+        console.error("Script terminated:", err instanceof Error ? err.stack : err);
+        process.exit(124);
+    }
+})();
 
 async function getQueriesJsonFromS3() {
     const s3Client = new S3Client({region: process.env.AWS_REGION});
