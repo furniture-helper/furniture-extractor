@@ -26,7 +26,11 @@ abstract class Extractor {
         let retries = 3
         while (retries > 0) {
             try {
-                const product = await this.doExtract();
+                const product = await this.withTimeout(
+                    this.doExtract(),
+                    5 * 60 * 1000,
+                    `doExtract timed out after ${5 * 60 * 1000} ms`
+                );
                 console.debug(`Extracted product: ${product}`);
                 return product
             } catch (error) {
@@ -63,15 +67,49 @@ abstract class Extractor {
         return price;
     }
 
+    private withTimeout<T>(promise: Promise<T>, ms: number, message?: string): Promise<T> {
+        return new Promise<T>((resolve, reject) => {
+            const id = setTimeout(() => reject(new Error(message || `Operation timed out after ${ms} ms`)), ms);
+            promise.then(
+                (value) => {
+                    clearTimeout(id);
+                    resolve(value);
+                },
+                (err) => {
+                    clearTimeout(id);
+                    reject(err);
+                }
+            );
+        });
+    }
+
     private async doExtract(): Promise<Product> {
-        const browser = await BrowserManager.getBrowser(this.vendor)
-        const page = await browser.newPage();
+        const getBrowserWithTimeout = (ms: number) =>
+            Promise.race([
+                BrowserManager.getBrowser(this.vendor),
+                new Promise<never>((_, rej) => setTimeout(() => rej(new Error("getBrowser timeout")), ms))
+            ]);
+
+        const newPageWithTimeout = (browser: any, ms: number) =>
+            Promise.race([
+                browser.newPage(),
+                new Promise<never>((_, rej) => setTimeout(() => rej(new Error("newPage timeout")), ms))
+            ]);
+
+        const browser = await getBrowserWithTimeout(15000);
+        const page = await newPageWithTimeout(browser, 5000);
 
         try {
             await page.goto(this.url, {timeout: 60000, waitUntil: "load"});
 
-            const titlePromises = this.titleIndicators.map((indicator) => page.textContent(indicator));
-            const title = await Promise.race(titlePromises);
+            const titleTimeoutMs = 5000;
+            const titlePromises = this.titleIndicators.map((indicator) =>
+                page.textContent(indicator, {timeout: titleTimeoutMs}).catch(() => null)
+            );
+            const title = await Promise.race([
+                ...titlePromises,
+                new Promise<null>((res) => setTimeout(() => res(null), titleTimeoutMs))
+            ]);
             if (!title) throw new Error(`Title not found using indicators: ${this.titleIndicators.join(", ")}`);
 
             const price = await this.getPrice(page);
