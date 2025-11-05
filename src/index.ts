@@ -1,8 +1,8 @@
 import minimist from "minimist";
 import {fetchProducts} from "./fetch.js";
 
-console.debug = () => {
-};
+// console.debug = () => {
+// };
 
 const args = minimist(process.argv.slice(2));
 const category = args['category']

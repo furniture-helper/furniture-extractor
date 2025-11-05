@@ -116,6 +116,10 @@ abstract class Extractor {
 
             const productImageUrl = await page.getAttribute(this.imageIndicator, 'src') || "";
 
+            console.debug(`Title: ${title}`);
+            console.debug(`Price: ${price}`);
+            console.debug(`Image URL: ${productImageUrl}`);
+            
             const pageContent = await page.content();
             const siteRoot = new URL(this.url).origin;
             const updatedContent = pageContent.replace(/(href|src)="\/([^"]*)"/g, `$1="${siteRoot}/$2"`);

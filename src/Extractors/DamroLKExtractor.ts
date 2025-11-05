@@ -7,15 +7,15 @@ export default class DamroLKExtractor extends Extractor {
     }
 
     get imageIndicator(): string {
-        return "img.iconic-woothumbs-images__image";
+        return ".item .product-slider__main-slider__item a[data-fancybox='gallery'] img";
     }
 
     get priceIndicators(): string[] {
-        return [".product-inside-cash-price-new:has-text('Rs.')", ".product-inside-cash-price", ".product-name-colom span", "table.table.table-striped > tbody > tr > td:has-text('Rs.')"];
+        return [".product-inside-cash-price-new:has-text('Rs.')", ".product-inside-cash-price", ".product-name-colom span", "table.table.table-striped > tbody > tr > td:has-text('Rs.')", ".selling-price span.data:has-text('Rs.')"];
     }
 
     get titleIndicators(): string[] {
-        return [".product-inside-pro-name-new", ".product-inside-pro-name", ".bedroom-cat-name"];
+        return [".product-inside-pro-name-new", ".product-inside-pro-name", ".bedroom-cat-name", "h1.product-title"];
     }
 
     // protected async getPrice(page: Page): Promise<number> {

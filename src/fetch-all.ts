@@ -4,8 +4,8 @@ import {Readable} from "stream";
 
 const TIMEOUT_MS = 6 * 60 * 60 * 1000 // 6 hours
 
-console.debug = () => {
-};
+// console.debug = () => {
+// };
 
 const streamToString = (stream: Readable): Promise<string> =>
     new Promise((resolve, reject) => {

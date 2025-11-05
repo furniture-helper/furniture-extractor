@@ -9,31 +9,31 @@ export default class DamroLKSearcher extends Searcher {
     }
 
     get searchUrlPrefix(): string {
-        return "https://damro.lk/?s="
+        return "https://www.damro.lk/filter?search="
     }
 
     get searchUrlSuffix(): string {
-        return "&post_type=product"
+        return ""
     }
 
     get noResultsIndicator(): string {
-        return "#main-content #primary .woocommerce-info"
+        return ".no-results"
     }
 
     get searchResultsContainerIndicator(): string {
-        return ".product-wrapper"
+        return ".product-grid-item"
     }
 
     get productLinkIndicator(): string {
-        return ".product-wrapper .thumbnail-wrapper a"
+        return ".product-grid-item .product-element-top a"
     }
 
     get productUrlPrefix(): string {
-        return "https://damro.lk/product/"
+        return "https://www.damro.lk/product/"
     }
 
     get nextPageIndicator(): string {
-        return (".next.page-numbers");
+        return ("a[rel='next']");
     }
 
     getExtractor(url: string): Extractor {

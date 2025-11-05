@@ -6,7 +6,6 @@ import {Product} from "./Product.js";
 import {ProcessQueue} from "./ProcessQueue.js";
 import AbansSearcher from "./Searchers/AbansSearcher.js";
 import SingerSearcher from "./Searchers/SingerSearcher.js";
-import DamroOnlineSearcher from "./Searchers/DamroOnlineSearcher.js";
 import DamroLKSearcher from "./Searchers/DamroLKSearcher.js";
 import SinghagiriSearcher from "./Searchers/SinghagiriSearcher.js";
 import MySoftlogicSearcher from "./Searchers/MySoftlogicSearcher.js";
@@ -23,7 +22,7 @@ async function fetchProducts(category: string, queries: string[], price_range: {
     const searchers: Searcher[] = [
         new SingerSearcher(queries, category),
         new AbansSearcher(queries, category),
-        new DamroOnlineSearcher(queries, category),
+        // new DamroOnlineSearcher(queries, category),
         new DamroLKSearcher(queries, category),
         new SinghagiriSearcher(queries, category),
         new MySoftlogicSearcher(queries, category)
@@ -49,7 +48,7 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
 }) {
     const productUrls = await searcher.search()
 
-    const processQueue = new ProcessQueue(3)
+    const processQueue = new ProcessQueue(1)
     for (const url of productUrls) {
         processQueue.addTask(async () => {
             const extractor = searcher.getExtractor(url)
@@ -63,6 +62,9 @@ async function searchAndExtract(category: string, searcher: Searcher, products: 
             }
             Statistics.recordProductProcessed(searcher.vendor, category)
             Statistics.printProgress()
+            
+            // wait 3s between processing products to avoid being blocked
+            await new Promise(res => setTimeout(res, 3000));
         });
     }
     await processQueue.run()
